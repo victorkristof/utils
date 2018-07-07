@@ -1,3 +1,15 @@
+# Utils
+
+## Install
+
+From the root directory of this repo, run:
+
+```
+pip install -e lib
+```
+
+This will install the lib `utils`.
+
 # Python Simple Progress Bar
 
 A simple, easy-to-use progress bar for your time-consuming operations in Python.

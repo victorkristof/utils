@@ -6,14 +6,14 @@
 import json, os, pickle
 
 
-def save_json(objects, path):
+def save_json(dicts, path):
     """
     Save a list of objects as JSON (.txt).
     """
     # Remove the file if it exists
     if os.path.exists(path):
         os.remove(path)
-    for obj in objects:
+    for obj in dicts:
         # 'a' stands for 'append' to the end of the file
         # '+' to create the file if it doesn't exist
         with open(path, 'a+') as f:

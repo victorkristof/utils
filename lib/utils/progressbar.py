@@ -1,29 +1,29 @@
 import sys
 import time
-from datetime import timedelta
+from datetime import timedelta as td
 
 
 class ProgressBar:
-    """
+    '''
     Instantiate a progress bar. It assumes values from 0 to end_value - 1.
 
     Usage:
-    >>> bar = ProgressBar(end_value=100, text="Iteration")
+    >>> bar = ProgressBar(end_value=100, text='Iteration')
     >>> bar.start()
     >>> for i in range(0, 100):
     >>>    time.sleep(1)
     >>>    bar.update(i)
-    """
+    '''
 
     def __init__(self, end_value=100, text=None, count=False, bar_length=20):
-        """
+        '''
         Initialize the progress bar.
 
         :param end_value:   Maximum number of iterations
         :param text:        Text to be displayed before the bar
         :param count:       Whether to display the count of iterations
         :param bar_length:  Number of hashes to display
-        """
+        '''
         self.end_value = end_value
         self.current = 0
         self.bar_length = bar_length
@@ -32,90 +32,96 @@ class ProgressBar:
         if text:
             self.text = text
         else:
-            self.text = "Progress"
+            self.text = 'Progress'
 
     def _reset(self):
-        """
+        '''
         Reset the bar.
-        """
+        '''
         self.current = 0
         self.start_time = 0
 
     @staticmethod
     def _print(text):
-        """
+        '''
         Print text to the console.
 
         :param text: Text to be printed
-        """
+        '''
         sys.stdout.write(text)
         sys.stdout.flush()
 
     def start(self, status_text=None):
-        """
+        '''
         Start the timer and displaying the bar.
 
         :param status_text: Optional status text to be displayed after the bar
-        """
+        '''
         self._reset()
         # Initialize starting time
         self.start_time = int(time.time())
         # Start displaying the bar
         if self.count:
-            display_text = "\r{0} ({4:>{5}}/{3}): [{1}] {2}%".format(self.text,
-                                                                       ' ' * self.bar_length,
-                                                                       0,
-                                                                       self.end_value,
-                                                                       0,
-                                                                       len(str(self.end_value)))
+            display_text = ('\r{0} ({4:>{5}}/{3}): [{1}] {2}%'
+                            .format(self.text,
+                                    ' ' * self.bar_length,
+                                    0,
+                                    self.end_value,
+                                    0,
+                                    len(str(self.end_value))))
         else:
-            display_text = "\r{0}: [{1}] {2}%".format(self.text,
-                                                        ' ' * self.bar_length,
-                                                        self.current)
+            display_text = '\r{0}: [{1}] {2}%'.format(self.text,
+                                                      ' ' * self.bar_length,
+                                                      self.current)
         if status_text is not None:
-            display_text += " %s" % status_text
+            display_text += ' %s' % status_text
 
         self._print(display_text)
 
     def current_status(self, status_text):
-        """
+        '''
         Display the current status as a text after the bar
 
         :param status_text: Status text to be displayed
-        """
-        self._print(" " + status_text)
+        '''
+        self._print(' ' + status_text)
 
     def update(self, new_val):
-        """
+        '''
         Update the bar with new_val.
 
         :param new_val: New current value
-        """
+        '''
         self.current = new_val + 1
         if self.current <= self.end_value:
             percent = float(self.current) / self.end_value
             hashes = '#' * int(round(percent * self.bar_length))
             spaces = ' ' * (self.bar_length - len(hashes))
             if self.count:
-                display_text = "\r{0} ({4:>{5}}/{3}): [{1}] {2}%".format(self.text,
-                                                                           hashes + spaces,
-                                                                           int(round(percent * 100)),
-                                                                           self.end_value,
-                                                                           self.current,
-                                                                           len(str(self.end_value)))
+                display_text = ('\r{0} ({4:>{5}}/{3}): [{1}] {2}%'
+                                .format(self.text,
+                                        hashes + spaces,
+                                        int(round(percent * 100)),
+                                        self.end_value,
+                                        self.current,
+                                        len(str(self.end_value))))
             else:
-                display_text = "\r{0}: [{1}] {2}%".format(self.text,
-                                                            hashes + spaces,
-                                                            int(round(percent * 100)))
+                display_text = ('\r{0}: [{1}] {2}%'
+                                .format(self.text,
+                                        hashes + spaces,
+                                        int(round(percent * 100))))
             if self.current == self.end_value:
-                elapsed_time = timedelta(seconds=(int(time.time()) - self.start_time))
-                display_text += " Elapsed time: %s\n" % elapsed_time
+                elapsed_time = td(seconds=(int(time.time()) - self.start_time))
+                display_text += ' Elapsed time: %s\n' % elapsed_time
 
             self._print(display_text)
 
 
 def progress_bar_test(end_value, text, bar_length, count):
-    bar = ProgressBar(end_value=end_value, text=text, count=count, bar_length=bar_length)
+    bar = ProgressBar(end_value=end_value,
+                      text=text,
+                      count=count,
+                      bar_length=bar_length)
     bar.start()
     for i in range(0, end_value):
         time.sleep(1)
